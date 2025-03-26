@@ -2,18 +2,16 @@ package models;
 
 
 public class Ship {
-    private final int size;
-    private final String name;
+    private final ShipType type;
     private final boolean[] hits;
 
-    public Ship(int size, String name) {
-        this.size = size;
-        this.name = name;
-        this.hits = new boolean[size];
+    public Ship(ShipType type) {
+        this.type = type;
+        this.hits = new boolean[type.getSize()];
     }
 
     public void hit(int position) {
-        if (position >= 0 && position < size) {
+        if (position >= 0 && position < type.getSize()) {
             hits[position] = true;
         }
     }
@@ -25,11 +23,19 @@ public class Ship {
         return true;
     }
 
+    public String getStatus() {
+        int hitCount = 0;
+        for (boolean hit : hits) {
+            if (hit) hitCount++;
+        }
+        return isSunk() ? "🔥 Hundido" : "Golpes: " + hitCount + "/" + type.getSize();
+    }
+
     public String getName() {
-        return name;
+        return type.getName();
     }
 
     public int getSize() {
-        return size;
+        return type.getSize();
     }
 }
